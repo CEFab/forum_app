@@ -1,13 +1,17 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:forum_app/constants/constants.dart';
+// import 'package:forum_app/views/home.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class AuthenticationController extends GetxController {
   final isLoading = false.obs;
+  final token = ''.obs;
+
+  final box = GetStorage();
 
   Future register({
     required String name,
@@ -16,8 +20,7 @@ class AuthenticationController extends GetxController {
     required String password,
   }) async {
     try {
-      isLoading(true);
-
+      isLoading.value = true;
       var data = {
         'name': name,
         'username': username,
@@ -25,38 +28,76 @@ class AuthenticationController extends GetxController {
         'password': password,
       };
 
-      var response = await http.post(Uri.parse('${url}register'),
-          headers: {'Accept': 'application/json'}, body: data);
+      var response = await http.post(
+        Uri.parse('${url}register'),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: data,
+      );
 
       if (response.statusCode == 201) {
-        isLoading(false);
-        debugPrint(json.decode(response.body));
+        isLoading.value = false;
+        token.value = json.decode(response.body)['token'];
+        box.write('token', token.value);
+        // Get.offAll(() => const HomePage());
       } else {
-        isLoading(false);
-        debugPrint(json.decode(response.body));
+        isLoading.value = false;
+        Get.snackbar(
+          'Error',
+          json.decode(response.body)['message'],
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        print(json.decode(response.body));
       }
     } catch (e) {
-      isLoading(false);
-      if (kDebugMode) {
-        print(e.toString());
-      }
+      isLoading.value = false;
+
+      print(e.toString());
     }
-
-    // if (response.statusCode == 200) {
-    //   var body = jsonDecode(response.body);
-    //   Get.snackbar('Success', body['message']);
-    // } else {
-    //   Get.snackbar('Error', 'Failed to register');
-    // }
-
-    // isLoading(true);
-    // await Future.delayed(const Duration(seconds: 2));
-    // isLoading(false);
   }
 
-  // Future login() async {
-  //   isLoading(true);
-  //   await Future.delayed(const Duration(seconds: 2));
-  //   isLoading(false);
-  // }
+  Future login({
+    required String username,
+    required String password,
+  }) async {
+    try {
+      isLoading.value = true;
+      var data = {
+        'username': username,
+        'password': password,
+      };
+
+      var response = await http.post(
+        Uri.parse('${url}login'),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: data,
+      );
+
+      if (response.statusCode == 200) {
+        isLoading.value = false;
+        token.value = json.decode(response.body)['token'];
+        box.write('token', token.value);
+        // Get.offAll(() => const HomePage());
+      } else {
+        isLoading.value = false;
+        Get.snackbar(
+          'Error',
+          json.decode(response.body)['message'],
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        print(json.decode(response.body));
+      }
+    } catch (e) {
+      isLoading.value = false;
+
+      print(e.toString());
+    }
+  }
 }

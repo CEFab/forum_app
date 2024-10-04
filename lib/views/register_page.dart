@@ -57,28 +57,30 @@ class _RegisterPageState extends State<RegisterPage> {
               obscureText: true,
             ),
             const SizedBox(height: 30),
-            Obx(() {
-              return _authenticationController.isLoading.isTrue
-                  ? const CircularProgressIndicator()
-                  : ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        elevation: 0,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 50, vertical: 10),
-                      ),
-                      onPressed: () async {
-                        await _authenticationController.register(
-                          name: _nameController.text.trim(),
-                          username: _usernameController.text.trim(),
-                          email: _emailController.text.trim(),
-                          password: _passwordController.text.trim(),
-                        );
-                      },
-                      child: Text('Register',
-                          style: GoogleFonts.poppins(fontSize: size * 0.040)),
-                    );
-            }),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                elevation: 0,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              ),
+              onPressed: () async {
+                await _authenticationController.register(
+                  name: _nameController.text.trim(),
+                  username: _usernameController.text.trim(),
+                  email: _emailController.text.trim(),
+                  password: _passwordController.text.trim(),
+                );
+              },
+              child: Obx(() {
+                return _authenticationController.isLoading.value
+                    ? const CircularProgressIndicator(
+                        color: Colors.black,
+                      )
+                    : Text('Register',
+                        style: GoogleFonts.poppins(fontSize: size * 0.040));
+              }),
+            ),
             const SizedBox(height: 20),
             TextButton(
               onPressed: () {
