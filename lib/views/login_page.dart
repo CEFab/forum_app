@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:forum_app/views/register_page.dart';
 import 'package:forum_app/views/widgets/input_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -48,6 +50,15 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () {},
               child: Text('Login',
                   style: GoogleFonts.poppins(fontSize: size * 0.040)),
+            ),
+            const SizedBox(height: 20),
+            TextButton(
+              onPressed: () {
+                Get.to(const RegisterPage());
+              },
+              child: Text('Register',
+                  style: GoogleFonts.poppins(
+                      fontSize: size * 0.040, color: Colors.black)),
             ),
           ],
         ),
