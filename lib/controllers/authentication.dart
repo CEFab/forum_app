@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:forum_app/constants/constants.dart';
-// import 'package:forum_app/views/home.dart';
+import 'package:forum_app/views/home.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -40,7 +40,7 @@ class AuthenticationController extends GetxController {
         isLoading.value = false;
         token.value = json.decode(response.body)['token'];
         box.write('token', token.value);
-        // Get.offAll(() => const HomePage());
+        Get.offAll(() => const HomePage());
       } else {
         isLoading.value = false;
         Get.snackbar(
@@ -82,7 +82,8 @@ class AuthenticationController extends GetxController {
         isLoading.value = false;
         token.value = json.decode(response.body)['token'];
         box.write('token', token.value);
-        // Get.offAll(() => const HomePage());
+        Get.offAll(() => const HomePage());
+        print(json.decode(response.body));
       } else {
         isLoading.value = false;
         Get.snackbar(

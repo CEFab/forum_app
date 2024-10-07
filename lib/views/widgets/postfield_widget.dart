@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class InputWidget extends StatelessWidget {
-  const InputWidget({
+class PostField extends StatelessWidget {
+  const PostField({
     super.key,
-    required this.hintText,
     required this.controller,
-    required this.obscureText,
+    required this.hintText,
   });
 
-  final String hintText;
   final TextEditingController controller;
-  final bool obscureText;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      height: 70,
       decoration: BoxDecoration(
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(10),
@@ -24,12 +22,12 @@ class InputWidget extends StatelessWidget {
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: hintText,
-          hintStyle: GoogleFonts.poppins(),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-        ),
-        obscureText: obscureText,
+            border: InputBorder.none,
+            hintText: hintText,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 10.0,
+            )),
       ),
     );
   }
