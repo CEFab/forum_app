@@ -9,6 +9,13 @@ class PostController extends GetxController {
   final posts = [].obs;
   final isLoading = false.obs;
   final box = GetStorage();
+  // final token = GetStorage().read('token');
+
+  @override
+  void onInit() {
+    super.onInit();
+    getAllPosts();
+  }
 
   get http => null;
 
@@ -24,8 +31,9 @@ class PostController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        isLoading.value = false;
-        posts.value = json.decode(response.body)['data'];
+        // isLoading.value = false;
+        // posts.value = json.decode(response.body)['data'];
+        print(json.decode(response.body));
       } else {
         isLoading.value = false;
         Get.snackbar(
