@@ -3,8 +3,7 @@ import 'package:forum_app/controllers/post_controller.dart';
 import 'package:forum_app/views/widgets/postdata_widget.dart';
 import 'package:forum_app/views/widgets/postfield_widget.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get_storage/get_storage.dart';
+// import 'package:get_storage/get_storage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,12 +13,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final PostController postController = Get.put(PostController());
+  final PostController _postController = Get.put(PostController());
   final TextEditingController _textController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
-    var token = box.read('token');
+    // final box = GetStorage();
+    // var token = box.read('token');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Forum App'),
@@ -51,7 +51,25 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
               const Text('Posts:'),
               const SizedBox(height: 20),
-              PostData(),
+              Obx(() {
+                return _postController.isLoading.value
+                    ? const Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _postController.posts.value.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              PostData(
+                                  post: _postController.posts.value[index]),
+                              const SizedBox(
+                                  height: 10), // Add space between items
+                            ],
+                          );
+                        },
+                      );
+              })
             ],
           ),
         ),
