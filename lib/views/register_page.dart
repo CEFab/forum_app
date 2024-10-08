@@ -62,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 backgroundColor: Colors.black,
                 elevation: 0,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
               ),
               onPressed: () async {
                 await _authenticationController.register(

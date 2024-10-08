@@ -22,6 +22,7 @@ class PostController extends GetxController {
 
   Future getAllPosts() async {
     try {
+      posts.value.clear();
       isLoading.value = true;
       var response = await http.get(
         Uri.parse('${url}feeds'),
@@ -55,4 +56,89 @@ class PostController extends GetxController {
       print(e.toString());
     }
   }
+
+  Future createPost({
+    required String content,
+  }) async {
+    try {
+      var data = {
+        'content': content,
+      };
+
+      var response = await http.post(
+        Uri.parse('${url}feed/store'),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ${box.read('token')}',
+          // 'Bearer token': box.read('token'),
+        },
+        body: data,
+      );
+
+      if (response.statusCode == 201) {
+        Get.snackbar(
+          'Success',
+          json.decode(response.body)['message'],
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+        posts.value.add(PostModel.fromJson(json.decode(response.body)['feed']));
+      } else {
+        Get.snackbar(
+          'Error',
+          json.decode(response.body)['message'],
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        print(json.decode(response.body));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Future createPost(String content) async {
+  //   try {
+  //     isLoading.value = true;
+  //     var response = await http.post(
+  //       Uri.parse('${url}feeds'),
+  //       headers: {
+  //         'Accept': 'application/json',
+  //         'Authorization': 'Bearer ${box.read('token')}',
+  //         // 'Bearer token': box.read('token'),
+  //       },
+  //       body: {
+  //         'content': content,
+  //       },
+  //     );
+
+  //     if (response.statusCode == 201) {
+  //       isLoading.value = false;
+  //       Get.snackbar(
+  //         'Success',
+  //         json.decode(response.body)['message'],
+  //         snackPosition: SnackPosition.TOP,
+  //         backgroundColor: Colors.green,
+  //         colorText: Colors.white,
+  //       );
+  //       // posts.value.add(json.decode(response.body)['data']);
+  //       posts.value.add(PostModel.fromJson(json.decode(response.body)['feed']));
+  //     } else {
+  //       isLoading.value = false;
+  //       Get.snackbar(
+  //         'Error',
+  //         json.decode(response.body)['message'],
+  //         snackPosition: SnackPosition.TOP,
+  //         backgroundColor: Colors.red,
+  //         colorText: Colors.white,
+  //       );
+  //       print(json.decode(response.body));
+  //     }
+  //   } catch (e) {
+  //     isLoading.value = false;
+  //     print(e.toString());
+  //   }
+  // }
 }

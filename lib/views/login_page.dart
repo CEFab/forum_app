@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                 backgroundColor: Colors.black,
                 elevation: 0,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
               ),
               onPressed: () async {
                 await _authenticationController.login(

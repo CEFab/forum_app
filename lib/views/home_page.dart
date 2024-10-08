@@ -45,8 +45,20 @@ class _HomePageState extends State<HomePage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                 ),
-                onPressed: () {},
-                child: const Text('Post'),
+                onPressed: () async {
+                  await _postController.createPost(
+                      content: _textController.text.trim());
+                  _textController.clear();
+                  _postController.getAllPosts();
+                },
+                child: Obx(() {
+                  return _postController.isLoading.value
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : const Text('Post');
+                  // return const Text('Post');
+                }),
               ),
               const SizedBox(height: 20),
               const Text('Posts:'),

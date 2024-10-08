@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:forum_app/constants/constants.dart';
-import 'package:forum_app/views/home.dart';
+import 'package:forum_app/views/home_page.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
