@@ -77,8 +77,12 @@ class _PostDetailsState extends State<PostDetails> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   // Add comment functionality
+                  await _postController.createComment(
+                      widget.post.id!, _commentController.text.trim());
+                  _commentController.clear();
+                  _postController.getComments(widget.post.id!);
                 },
                 child: const Text('Comment'),
               ),
