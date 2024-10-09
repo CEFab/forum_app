@@ -131,7 +131,10 @@ class PostController extends GetxController {
         );
         print(json.decode(response.body));
       }
-    } catch (e) {}
+    } catch (e) {
+      // isLoading.value = false;
+      print(e.toString());
+    }
   }
 
   Future createComment(id, body) async {
@@ -197,6 +200,42 @@ class PostController extends GetxController {
       } else {
         isLoading.value = false;
         print(json.decode(request.body));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+// API request to delete a feed : http://ipaddress/api/feed/delete/{feedid}
+  Future deletePost(id) async {
+    try {
+      isLoading.value = true;
+      var request = await http.delete(
+        Uri.parse('${url}feed/delete/$id'),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization':
+              'Bearer ${box.read('token')}', // 'Bearer token': box.read('token'),
+        },
+      );
+      if (request.statusCode == 200) {
+        isLoading.value = false;
+        Get.snackbar(
+          'Success',
+          json.decode(request.body)['message'],
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      } else {
+        isLoading.value = false;
+        Get.snackbar(
+          'Error',
+          json.decode(request.body)['message'],
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
       }
     } catch (e) {
       print(e.toString());

@@ -59,7 +59,15 @@ class _PostDataState extends State<PostData> {
                       ));
                 },
                 icon: Icon(Icons.message),
-              )
+              ),
+              // Delete functionality
+              IconButton(
+                onPressed: () async {
+                  await _postController.deletePost(widget.post.id!);
+                  _postController.getAllPosts();
+                },
+                icon: Icon(Icons.delete),
+              ),
             ],
           )
         ],
